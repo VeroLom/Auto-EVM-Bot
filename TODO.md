@@ -9,7 +9,6 @@ Task list for Auto-EVM-bot.
 - [ ] Use recipient address from the latest block instead of generating a random one
 - [ ] Deploy random minimalist contracts
 - [ ] Interact with public ecosystem contracts
-- [ ] Add randomized execution intervals
 - [ ] Support multiple EVM networks
 
 ## Improvements
