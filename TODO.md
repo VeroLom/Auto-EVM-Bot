@@ -5,6 +5,7 @@ Task list for Auto-EVM-bot.
 ## Core Functionality
 
 - [x] Random token transfers
+- [x] Add periodic execution with randomized offset
 - [ ] Use recipient address from the latest block instead of generating a random one
 - [ ] Deploy random minimalist contracts
 - [ ] Interact with public ecosystem contracts

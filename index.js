@@ -13,8 +13,10 @@ if (!privateKey || !rpcUrl) {
 const provider = new ethers.JsonRpcProvider(rpcUrl);
 const wallet = new ethers.Wallet(privateKey, provider);
 
-const minAmount = ethers.parseEther("0.00001");
-const maxAmount = ethers.parseEther("0.00002");
+const minAmount = ethers.parseEther("0.000001");
+const maxAmount = ethers.parseEther("0.000002");
+const loopDelay = 30000;
+const loopDelayOffset = 2000;
 
 /*** Functions ***/
 function getRandomAddress() {
@@ -45,16 +47,30 @@ async function sendRandomValue() {
     }
 }
 
-
-/*** Main ***/
-(async () => {
+async function getBalance() {
     const balance = await provider.getBalance(wallet.address);
     console.log(
         chalk.blueBright('[?] Wallet balance:'),
         chalk.yellowBright(`${ethers.formatEther(balance)}`),
         chalk.blueBright('PHRS'),
     )
+}
 
-    // Perform action
-    await sendRandomValue();
-})();
+/*** Main ***/
+async function loop() {
+    await getBalance();
+
+    // Loop
+    const delay = loopDelay + (Math.random() * loopDelayOffset * 2 - loopDelayOffset);
+    console.log(
+        chalk.green('[?] Delay:'),
+        chalk.magenta(`${delay / 1000}`)
+    );
+
+    setTimeout(async () => {
+        await sendRandomValue();
+        loop();
+    }, delay);
+}
+
+loop();
