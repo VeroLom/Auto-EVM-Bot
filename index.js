@@ -56,5 +56,5 @@ async function sendRandomValue() {
     )
 
     // Perform action
-    sendRandomValue();
+    await sendRandomValue();
 })();
