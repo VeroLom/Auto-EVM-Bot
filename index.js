@@ -16,15 +16,42 @@ const wallet = new ethers.Wallet(privateKey, provider);
 const minAmount = ethers.parseEther("0.000001");
 const maxAmount = ethers.parseEther("0.000002");
 const loopDelay = 30000;
-const loopDelayOffset = 2000;
+const loopDelayOffset = 5000;
 
 /*** Functions ***/
-function getRandomAddress() {
-    return ethers.Wallet.createRandom().address;
+async function getRandomAddressFromLastBlock() {
+    try {
+        const block = await provider.getBlock("latest");
+        if (!block || !block.transactions || block.transactions.length === 0) {
+            console.log(chalk.redBright(`[!] Block or transactions not found`));
+            return null;
+        }
+
+        for (const txHash of block.transactions) {
+            try {
+                const tx = await provider.getTransaction(txHash);
+                if (tx && tx.from) {
+                    return tx.from;
+                }
+            } catch (innerErr) {
+                console.log(chalk.redBright(`[!] Error getting transaction ${innerErr.message}`));
+            }
+        }
+
+        return null;
+    } catch (err) {
+        console.log(chalk.redBright(`[!] Error getting an address from the last block: ${err.message}`));
+        return null;
+    }
 }
 
+/*** Actions ***/
 async function sendRandomValue() {
-    const to = getRandomAddress();
+    const to = await getRandomAddressFromLastBlock();
+    if (!to) {
+        console.log(chalk.red('[-] No address found, skipping'));
+    }
+
     const randomValue = Math.floor(Number(minAmount) + Math.random() * (Number(maxAmount) - Number(minAmount)));
     const value = ethers.getBigInt(randomValue.toString());
 

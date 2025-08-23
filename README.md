@@ -5,7 +5,7 @@ Auto-EVM-bot is a minimalist bot that performs randomized token transfers on EVM
 ## Features
 
 - Sends a random amount of native tokens to a randomly generated address
-- Periodic execution with randomized ±2s offset
+- Periodic execution with randomized offset
 - ~~Deploys random minimalist contracts~~
 - ~~Interacts with public ecosystem contracts~~
 - ~~Supports randomized execution intervals~~
